@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,10 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {LineChart} from 'react-native-chart-kit';
-import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faBell,
@@ -19,26 +19,34 @@ import {
   faPlay,
   faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons';
+import {useGetWalletDataQuery} from '../services/api';
 
 const OverviewScreen = () => {
-  const [walletData, setWalletData] = useState({
-    balance: '0',
-    auto_fill_amount: '0',
-    auto_fill_date: '',
-  });
+  const {data: walletData, isLoading, error} = useGetWalletDataQuery();
 
-  useEffect(() => {
-    fetchWalletData();
-  }, []);
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#566DFB" />
+      </View>
+    );
+  }
 
-  const fetchWalletData = async () => {
-    try {
-      const response = await axios.get('https://01.fy25ey02.64mb.io/');
-      setWalletData(response.data);
-    } catch (error) {
-      console.error('Error fetching wallet data:', error);
-    }
-  };
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Error loading wallet data</Text>
+      </View>
+    );
+  }
+
+  if (!walletData) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>No wallet data available</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -304,7 +312,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: 14,
   },
   headerLeft: {},
   greeting: {
@@ -323,7 +331,7 @@ const styles = StyleSheet.create({
   },
   notificationContainer: {
     marginHorizontal: -16,
-    marginLeft: 0,
+    marginLeft: -2,
   },
   notificationCardsRow: {
     flexDirection: 'row',
@@ -332,7 +340,7 @@ const styles = StyleSheet.create({
   },
   notificationCard: {
     width: 280,
-    padding: 16,
+    padding: 14,
     borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: {
@@ -384,8 +392,8 @@ const styles = StyleSheet.create({
   },
   walletCard: {
     backgroundColor: 'white',
-    margin: 16,
-    padding: 16,
+    margin: 14,
+    padding: 14,
     borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: {
@@ -453,14 +461,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   statsContainer: {
+    marginTop: -10,
     flexDirection: 'row',
-    padding: 16,
+    padding: 14,
     gap: 12,
   },
   statCard: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 16,
+    padding: 14,
     borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: {
@@ -503,7 +512,8 @@ const styles = StyleSheet.create({
   },
   taskCompletionCard: {
     backgroundColor: '#566DFB',
-    margin: 16,
+    marginTop: 2,
+    margin: 14,
     padding: 20,
     borderRadius: 16,
     shadowColor: '#566DFB',
@@ -537,7 +547,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 22,
     fontWeight: 'bold',
-    transform: [{ rotate: '-135deg' }],
+    transform: [{ rotate: '225deg' }],
   },
   taskTextContent: {
     flex: 1,
@@ -555,7 +565,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   campaignContainer: {
-    padding: 16,
+    padding: 14,
   },
   campaignTabs: {
     marginBottom: 20,
@@ -644,8 +654,8 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     backgroundColor: 'white',
-    margin: 16,
-    padding: 16,
+    margin: 14,
+    padding: 14,
     borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: {
@@ -714,6 +724,21 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: 'rgba(75, 80, 233, 0.1)',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#E24E58',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
