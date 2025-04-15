@@ -11,13 +11,11 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
-    "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-native-fontawesome": "^0.3.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/native": "^7.1.6",
     "@reduxjs/toolkit": "^2.6.1",
-    "axios": "^1.8.4",
     "react": "19.0.0",
     "react-native": "0.79.0",
     "react-native-chart-kit": "^6.12.0",

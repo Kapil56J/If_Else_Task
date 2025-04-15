@@ -16,8 +16,7 @@ import {
   faChevronRight,
   faWallet,
   faCheck,
-  faPlay,
-  faEllipsisH,
+ faSliders
 } from '@fortawesome/free-solid-svg-icons';
 import {useGetWalletDataQuery} from '../services/api';
 
@@ -197,7 +196,7 @@ const OverviewScreen = () => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.menuButton}>
-              <FontAwesomeIcon icon={faEllipsisH} color="#666" size={16} />
+              <FontAwesomeIcon icon={faSliders} color="#666" size={16} />
             </TouchableOpacity>
           </ScrollView>
 
@@ -318,7 +317,7 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#566DFB',
+    color: '#2F3BAD',
   },
   phoneNumber: {
     color: '#666',
